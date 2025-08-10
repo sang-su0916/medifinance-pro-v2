@@ -1,0 +1,1404 @@
+{
+  "generatedAt": "2025-08-10T08:33:39.156Z",
+  "sheets": {
+    "출": {
+      "size": {
+        "rows": 2156,
+        "cols": 15
+      },
+      "headers": [
+        " 지출내역 Total",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "[object Object]",
+        "",
+        "",
+        "★",
+        "",
+        "",
+        "",
+        "[object Object]",
+        ""
+      ],
+      "columns": {
+        "G": {
+          "index": 7,
+          "header": "[object Object]",
+          "formulaSamples": [
+            {
+              "row": 1,
+              "formula": "SUBTOTAL(9,G4:G6228)"
+            },
+            {
+              "row": 4,
+              "formula": "E4+F4"
+            },
+            {
+              "row": 5,
+              "formula": "E5+F5"
+            },
+            {
+              "row": 6,
+              "formula": "E6+F6"
+            },
+            {
+              "row": 7,
+              "formula": "E7+F7"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "En+Fn",
+              "count": 1997
+            },
+            {
+              "pattern": "SUBTOTAL(9,Gn:Gn)",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [],
+          "functionUsage": [
+            {
+              "fn": "SUBTOTAL",
+              "count": 1
+            }
+          ]
+        },
+        "J": {
+          "index": 10,
+          "header": "★",
+          "formulaSamples": [
+            {
+              "row": 2,
+              "formula": "INDEX(분!$A$2:$K$7102,MATCH(출!C2&출!I2,분!$C$2:$C$7102&분!$I$2:$I$7102,0),10)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "INDEX(분!$A$n:$K$n,MATCH(출!Cn&출!In,분!$C$n:$C$n&분!$I$n:$I$n,0),10)",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "분",
+              "count": 3
+            },
+            {
+              "sheet": "출",
+              "count": 2
+            }
+          ],
+          "functionUsage": [
+            {
+              "fn": "INDEX",
+              "count": 1
+            },
+            {
+              "fn": "MATCH",
+              "count": 1
+            }
+          ]
+        },
+        "O": {
+          "index": 15,
+          "header": "",
+          "formulaSamples": [
+            {
+              "row": 4,
+              "formula": "사업장요약현황!O8"
+            },
+            {
+              "row": 5,
+              "formula": "사업장요약현황!O9"
+            },
+            {
+              "row": 6,
+              "formula": "사업장요약현황!O10"
+            },
+            {
+              "row": 7,
+              "formula": "사업장요약현황!O11"
+            },
+            {
+              "row": 8,
+              "formula": "사업장요약현황!O12"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "사업장요약현황!On",
+              "count": 32
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "사업장요약현황",
+              "count": 32
+            }
+          ],
+          "functionUsage": []
+        },
+        "E": {
+          "index": 5,
+          "header": "",
+          "formulaSamples": [
+            {
+              "row": 281,
+              "formula": "406780+52080"
+            },
+            {
+              "row": 282,
+              "formula": "406780+52080"
+            },
+            {
+              "row": 283,
+              "formula": "406780+52080"
+            },
+            {
+              "row": 284,
+              "formula": "406780+52080"
+            },
+            {
+              "row": 285,
+              "formula": "406780+52080"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "406780+52080",
+              "count": 5
+            },
+            {
+              "pattern": "275640+34920",
+              "count": 1
+            },
+            {
+              "pattern": "ROUNDDOWN(101860/0.9%*1.15%,-1)",
+              "count": 1
+            },
+            {
+              "pattern": "ROUNDDOWN(89320/0.9%*1.15%,-1)",
+              "count": 1
+            },
+            {
+              "pattern": "ROUNDDOWN(87190/0.9%*1.15%,-1)",
+              "count": 1
+            },
+            {
+              "pattern": "ROUNDDOWN(86830/0.9%*1.15%,-1)",
+              "count": 1
+            },
+            {
+              "pattern": "ROUNDDOWN(86780/0.9%*1.15%,-1)",
+              "count": 1
+            },
+            {
+              "pattern": "ROUNDDOWN(83170/0.9%*1.15%,-1)",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [],
+          "functionUsage": [
+            {
+              "fn": "ROUNDDOWN",
+              "count": 6
+            }
+          ]
+        }
+      },
+      "externalRefs": [
+        "분",
+        "출",
+        "사업장요약현황"
+      ],
+      "functions": [
+        {
+          "fn": "ROUNDDOWN",
+          "count": 6
+        },
+        {
+          "fn": "SUBTOTAL",
+          "count": 1
+        },
+        {
+          "fn": "INDEX",
+          "count": 1
+        },
+        {
+          "fn": "MATCH",
+          "count": 1
+        }
+      ]
+    },
+    "분": {
+      "size": {
+        "rows": 615,
+        "cols": 11
+      },
+      "headers": [
+        "월",
+        "일",
+        "거래처",
+        "내역",
+        "공급가액",
+        "VAT",
+        "계",
+        "거래수단",
+        "거래증빙",
+        "계정과목",
+        "비고"
+      ],
+      "columns": {
+        "G": {
+          "index": 7,
+          "header": "계",
+          "formulaSamples": [
+            {
+              "row": 2,
+              "formula": "E2+F2"
+            },
+            {
+              "row": 3,
+              "formula": "E3+F3"
+            },
+            {
+              "row": 4,
+              "formula": "E4+F4"
+            },
+            {
+              "row": 5,
+              "formula": "E5+F5"
+            },
+            {
+              "row": 6,
+              "formula": "E6+F6"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "En+Fn",
+              "count": 614
+            }
+          ],
+          "referencedSheets": [],
+          "functionUsage": []
+        }
+      },
+      "externalRefs": [],
+      "functions": []
+    },
+    "월별요약손익계산서(추정)": {
+      "size": {
+        "rows": 45,
+        "cols": 17
+      },
+      "headers": [
+        "",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)",
+        "2023년 월별 요약손익계산서(추정)"
+      ],
+      "columns": {
+        "B": {
+          "index": 2,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "매출내역total!O4"
+            },
+            {
+              "row": 4,
+              "formula": "매출내역total!O5"
+            },
+            {
+              "row": 5,
+              "formula": "매출내역total!O6"
+            },
+            {
+              "row": 6,
+              "formula": "매출내역total!O7"
+            },
+            {
+              "row": 8,
+              "formula": "출!O4"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "출!On",
+              "count": 33
+            },
+            {
+              "pattern": "매출내역total!On",
+              "count": 4
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "출",
+              "count": 33
+            },
+            {
+              "sheet": "매출내역total",
+              "count": 4
+            }
+          ],
+          "functionUsage": []
+        },
+        "C": {
+          "index": 3,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,C$2,매출내역total!$J:$J,$B3)"
+            },
+            {
+              "row": 4,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,C$2,매출내역total!$J:$J,$B4)"
+            },
+            {
+              "row": 5,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,C$2,매출내역total!$J:$J,$B5)"
+            },
+            {
+              "row": 6,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,C$2,매출내역total!$J:$J,$B6)"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(C3:C6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "SUMIFS(출!$G:$G,출!$A:$A,C$n,출!$J:$J,$Bn)",
+              "count": 34
+            },
+            {
+              "pattern": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,C$n,매출내역total!$J:$J,$Bn)",
+              "count": 4
+            },
+            {
+              "pattern": "SUM(Cn:Cn)",
+              "count": 2
+            },
+            {
+              "pattern": "Cn-Cn",
+              "count": 1
+            },
+            {
+              "pattern": "IF(Cn>0,Cn/Cn,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "출",
+              "count": 102
+            },
+            {
+              "sheet": "매출내역total",
+              "count": 12
+            }
+          ],
+          "functionUsage": [
+            {
+              "fn": "SUMIFS",
+              "count": 38
+            },
+            {
+              "fn": "SUM",
+              "count": 2
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "D": {
+          "index": 4,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,D$2,매출내역total!$J:$J,$B3)"
+            },
+            {
+              "row": 4,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,D$2,매출내역total!$J:$J,$B4)"
+            },
+            {
+              "row": 5,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,D$2,매출내역total!$J:$J,$B5)"
+            },
+            {
+              "row": 6,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,D$2,매출내역total!$J:$J,$B6)"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(D3:D6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "SUMIFS(출!$G:$G,출!$A:$A,D$n,출!$J:$J,$Bn)",
+              "count": 34
+            },
+            {
+              "pattern": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,D$n,매출내역total!$J:$J,$Bn)",
+              "count": 4
+            },
+            {
+              "pattern": "SUM(Dn:Dn)",
+              "count": 2
+            },
+            {
+              "pattern": "Dn-Dn",
+              "count": 1
+            },
+            {
+              "pattern": "IF(Dn>0,Dn/Dn,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "출",
+              "count": 102
+            },
+            {
+              "sheet": "매출내역total",
+              "count": 12
+            }
+          ],
+          "functionUsage": [
+            {
+              "fn": "SUMIFS",
+              "count": 38
+            },
+            {
+              "fn": "SUM",
+              "count": 2
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "E": {
+          "index": 5,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,E$2,매출내역total!$J:$J,$B3)"
+            },
+            {
+              "row": 4,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,E$2,매출내역total!$J:$J,$B4)"
+            },
+            {
+              "row": 5,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,E$2,매출내역total!$J:$J,$B5)"
+            },
+            {
+              "row": 6,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,E$2,매출내역total!$J:$J,$B6)"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(E3:E6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "SUMIFS(출!$G:$G,출!$A:$A,E$n,출!$J:$J,$Bn)",
+              "count": 34
+            },
+            {
+              "pattern": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,E$n,매출내역total!$J:$J,$Bn)",
+              "count": 4
+            },
+            {
+              "pattern": "SUM(En:En)",
+              "count": 2
+            },
+            {
+              "pattern": "En-En",
+              "count": 1
+            },
+            {
+              "pattern": "IF(En>0,En/En,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "출",
+              "count": 102
+            },
+            {
+              "sheet": "매출내역total",
+              "count": 12
+            }
+          ],
+          "functionUsage": [
+            {
+              "fn": "SUMIFS",
+              "count": 38
+            },
+            {
+              "fn": "SUM",
+              "count": 2
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "F": {
+          "index": 6,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,F$2,매출내역total!$J:$J,$B3)"
+            },
+            {
+              "row": 4,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,F$2,매출내역total!$J:$J,$B4)"
+            },
+            {
+              "row": 5,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,F$2,매출내역total!$J:$J,$B5)"
+            },
+            {
+              "row": 6,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,F$2,매출내역total!$J:$J,$B6)"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(F3:F6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "SUMIFS(출!$G:$G,출!$A:$A,F$n,출!$J:$J,$Bn)",
+              "count": 34
+            },
+            {
+              "pattern": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,F$n,매출내역total!$J:$J,$Bn)",
+              "count": 4
+            },
+            {
+              "pattern": "SUM(Fn:Fn)",
+              "count": 2
+            },
+            {
+              "pattern": "Fn-Fn",
+              "count": 1
+            },
+            {
+              "pattern": "IF(Fn>0,Fn/Fn,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "출",
+              "count": 102
+            },
+            {
+              "sheet": "매출내역total",
+              "count": 12
+            }
+          ],
+          "functionUsage": [
+            {
+              "fn": "SUMIFS",
+              "count": 38
+            },
+            {
+              "fn": "SUM",
+              "count": 2
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "G": {
+          "index": 7,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,G$2,매출내역total!$J:$J,$B3)"
+            },
+            {
+              "row": 4,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,G$2,매출내역total!$J:$J,$B4)"
+            },
+            {
+              "row": 5,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,G$2,매출내역total!$J:$J,$B5)"
+            },
+            {
+              "row": 6,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,G$2,매출내역total!$J:$J,$B6)"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(G3:G6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "SUMIFS(출!$G:$G,출!$A:$A,G$n,출!$J:$J,$Bn)",
+              "count": 34
+            },
+            {
+              "pattern": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,G$n,매출내역total!$J:$J,$Bn)",
+              "count": 4
+            },
+            {
+              "pattern": "SUM(Gn:Gn)",
+              "count": 2
+            },
+            {
+              "pattern": "Gn-Gn",
+              "count": 1
+            },
+            {
+              "pattern": "IF(Gn>0,Gn/Gn,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "출",
+              "count": 102
+            },
+            {
+              "sheet": "매출내역total",
+              "count": 12
+            }
+          ],
+          "functionUsage": [
+            {
+              "fn": "SUMIFS",
+              "count": 38
+            },
+            {
+              "fn": "SUM",
+              "count": 2
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "H": {
+          "index": 8,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,H$2,매출내역total!$J:$J,$B3)"
+            },
+            {
+              "row": 4,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,H$2,매출내역total!$J:$J,$B4)"
+            },
+            {
+              "row": 5,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,H$2,매출내역total!$J:$J,$B5)"
+            },
+            {
+              "row": 6,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,H$2,매출내역total!$J:$J,$B6)"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(H3:H6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "SUMIFS(출!$G:$G,출!$A:$A,H$n,출!$J:$J,$Bn)",
+              "count": 34
+            },
+            {
+              "pattern": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,H$n,매출내역total!$J:$J,$Bn)",
+              "count": 4
+            },
+            {
+              "pattern": "SUM(Hn:Hn)",
+              "count": 2
+            },
+            {
+              "pattern": "Hn-Hn",
+              "count": 1
+            },
+            {
+              "pattern": "IF(Hn>0,Hn/Hn,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "출",
+              "count": 102
+            },
+            {
+              "sheet": "매출내역total",
+              "count": 12
+            }
+          ],
+          "functionUsage": [
+            {
+              "fn": "SUMIFS",
+              "count": 38
+            },
+            {
+              "fn": "SUM",
+              "count": 2
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "I": {
+          "index": 9,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,I$2,매출내역total!$J:$J,$B3)"
+            },
+            {
+              "row": 4,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,I$2,매출내역total!$J:$J,$B4)"
+            },
+            {
+              "row": 5,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,I$2,매출내역total!$J:$J,$B5)"
+            },
+            {
+              "row": 6,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,I$2,매출내역total!$J:$J,$B6)"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(I3:I6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "SUMIFS(출!$G:$G,출!$A:$A,I$n,출!$J:$J,$Bn)",
+              "count": 34
+            },
+            {
+              "pattern": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,I$n,매출내역total!$J:$J,$Bn)",
+              "count": 4
+            },
+            {
+              "pattern": "SUM(In:In)",
+              "count": 2
+            },
+            {
+              "pattern": "In-In",
+              "count": 1
+            },
+            {
+              "pattern": "IF(In>0,In/In,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "출",
+              "count": 102
+            },
+            {
+              "sheet": "매출내역total",
+              "count": 12
+            }
+          ],
+          "functionUsage": [
+            {
+              "fn": "SUMIFS",
+              "count": 38
+            },
+            {
+              "fn": "SUM",
+              "count": 2
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "J": {
+          "index": 10,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,J$2,매출내역total!$J:$J,$B3)"
+            },
+            {
+              "row": 4,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,J$2,매출내역total!$J:$J,$B4)"
+            },
+            {
+              "row": 5,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,J$2,매출내역total!$J:$J,$B5)"
+            },
+            {
+              "row": 6,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,J$2,매출내역total!$J:$J,$B6)"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(J3:J6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "SUMIFS(출!$G:$G,출!$A:$A,J$n,출!$J:$J,$Bn)",
+              "count": 34
+            },
+            {
+              "pattern": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,J$n,매출내역total!$J:$J,$Bn)",
+              "count": 4
+            },
+            {
+              "pattern": "SUM(Jn:Jn)",
+              "count": 2
+            },
+            {
+              "pattern": "Jn-Jn",
+              "count": 1
+            },
+            {
+              "pattern": "IF(Jn>0,Jn/Jn,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "출",
+              "count": 102
+            },
+            {
+              "sheet": "매출내역total",
+              "count": 12
+            }
+          ],
+          "functionUsage": [
+            {
+              "fn": "SUMIFS",
+              "count": 38
+            },
+            {
+              "fn": "SUM",
+              "count": 2
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "K": {
+          "index": 11,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,K$2,매출내역total!$J:$J,$B3)"
+            },
+            {
+              "row": 4,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,K$2,매출내역total!$J:$J,$B4)"
+            },
+            {
+              "row": 5,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,K$2,매출내역total!$J:$J,$B5)"
+            },
+            {
+              "row": 6,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,K$2,매출내역total!$J:$J,$B6)"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(K3:K6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "SUMIFS(출!$G:$G,출!$A:$A,K$n,출!$J:$J,$Bn)",
+              "count": 34
+            },
+            {
+              "pattern": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,K$n,매출내역total!$J:$J,$Bn)",
+              "count": 4
+            },
+            {
+              "pattern": "SUM(Kn:Kn)",
+              "count": 2
+            },
+            {
+              "pattern": "Kn-Kn",
+              "count": 1
+            },
+            {
+              "pattern": "IF(Kn>0,Kn/Kn,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "출",
+              "count": 102
+            },
+            {
+              "sheet": "매출내역total",
+              "count": 12
+            }
+          ],
+          "functionUsage": [
+            {
+              "fn": "SUMIFS",
+              "count": 38
+            },
+            {
+              "fn": "SUM",
+              "count": 2
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "L": {
+          "index": 12,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,L$2,매출내역total!$J:$J,$B3)"
+            },
+            {
+              "row": 4,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,L$2,매출내역total!$J:$J,$B4)"
+            },
+            {
+              "row": 5,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,L$2,매출내역total!$J:$J,$B5)"
+            },
+            {
+              "row": 6,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,L$2,매출내역total!$J:$J,$B6)"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(L3:L6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "SUMIFS(출!$G:$G,출!$A:$A,L$n,출!$J:$J,$Bn)",
+              "count": 34
+            },
+            {
+              "pattern": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,L$n,매출내역total!$J:$J,$Bn)",
+              "count": 4
+            },
+            {
+              "pattern": "SUM(Ln:Ln)",
+              "count": 2
+            },
+            {
+              "pattern": "Ln-Ln",
+              "count": 1
+            },
+            {
+              "pattern": "IF(Ln>0,Ln/Ln,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "출",
+              "count": 102
+            },
+            {
+              "sheet": "매출내역total",
+              "count": 12
+            }
+          ],
+          "functionUsage": [
+            {
+              "fn": "SUMIFS",
+              "count": 38
+            },
+            {
+              "fn": "SUM",
+              "count": 2
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "M": {
+          "index": 13,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,M$2,매출내역total!$J:$J,$B3)"
+            },
+            {
+              "row": 4,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,M$2,매출내역total!$J:$J,$B4)"
+            },
+            {
+              "row": 5,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,M$2,매출내역total!$J:$J,$B5)"
+            },
+            {
+              "row": 6,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,M$2,매출내역total!$J:$J,$B6)"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(M3:M6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "SUMIFS(출!$G:$G,출!$A:$A,M$n,출!$J:$J,$Bn)",
+              "count": 34
+            },
+            {
+              "pattern": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,M$n,매출내역total!$J:$J,$Bn)",
+              "count": 4
+            },
+            {
+              "pattern": "SUM(Mn:Mn)",
+              "count": 2
+            },
+            {
+              "pattern": "Mn-Mn",
+              "count": 1
+            },
+            {
+              "pattern": "IF(Mn>0,Mn/Mn,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "출",
+              "count": 102
+            },
+            {
+              "sheet": "매출내역total",
+              "count": 12
+            }
+          ],
+          "functionUsage": [
+            {
+              "fn": "SUMIFS",
+              "count": 38
+            },
+            {
+              "fn": "SUM",
+              "count": 2
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "N": {
+          "index": 14,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,N$2,매출내역total!$J:$J,$B3)"
+            },
+            {
+              "row": 4,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,N$2,매출내역total!$J:$J,$B4)"
+            },
+            {
+              "row": 5,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,N$2,매출내역total!$J:$J,$B5)"
+            },
+            {
+              "row": 6,
+              "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,N$2,매출내역total!$J:$J,$B6)"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(N3:N6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "SUMIFS(출!$G:$G,출!$A:$A,N$n,출!$J:$J,$Bn)",
+              "count": 34
+            },
+            {
+              "pattern": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,N$n,매출내역total!$J:$J,$Bn)",
+              "count": 4
+            },
+            {
+              "pattern": "SUM(Nn:Nn)",
+              "count": 2
+            },
+            {
+              "pattern": "Nn-Nn",
+              "count": 1
+            },
+            {
+              "pattern": "IF(Nn>0,Nn/Nn,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [
+            {
+              "sheet": "출",
+              "count": 102
+            },
+            {
+              "sheet": "매출내역total",
+              "count": 12
+            }
+          ],
+          "functionUsage": [
+            {
+              "fn": "SUMIFS",
+              "count": 38
+            },
+            {
+              "fn": "SUM",
+              "count": 2
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "O": {
+          "index": 15,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "SUM(C3:N3)"
+            },
+            {
+              "row": 4,
+              "formula": "SUM(C4:N4)"
+            },
+            {
+              "row": 5,
+              "formula": "SUM(C5:N5)"
+            },
+            {
+              "row": 6,
+              "formula": "SUM(C6:N6)"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(O3:O6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "SUM(Cn:Nn)",
+              "count": 38
+            },
+            {
+              "pattern": "SUM(On:On)",
+              "count": 2
+            },
+            {
+              "pattern": "On-On",
+              "count": 1
+            },
+            {
+              "pattern": "IF(On>0,On/On,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [],
+          "functionUsage": [
+            {
+              "fn": "SUM",
+              "count": 40
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "P": {
+          "index": 16,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "O3/$S$2*12"
+            },
+            {
+              "row": 4,
+              "formula": "O4/$S$2*12"
+            },
+            {
+              "row": 5,
+              "formula": "O5/$S$2*12"
+            },
+            {
+              "row": 6,
+              "formula": "O6/$S$2*12"
+            },
+            {
+              "row": 7,
+              "formula": "SUM(P3:P6)"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "On/$S$n*12",
+              "count": 37
+            },
+            {
+              "pattern": "SUM(Pn:Pn)",
+              "count": 2
+            },
+            {
+              "pattern": "On/$S$n*12+50000000",
+              "count": 1
+            },
+            {
+              "pattern": "Pn-Pn",
+              "count": 1
+            },
+            {
+              "pattern": "IF(Pn>0,Pn/Pn,\"\")",
+              "count": 1
+            }
+          ],
+          "referencedSheets": [],
+          "functionUsage": [
+            {
+              "fn": "SUM",
+              "count": 2
+            },
+            {
+              "fn": "IF",
+              "count": 1
+            }
+          ]
+        },
+        "Q": {
+          "index": 17,
+          "header": "2023년 월별 요약손익계산서(추정)",
+          "formulaSamples": [
+            {
+              "row": 3,
+              "formula": "IF($P$7>0,P3/$P$7,\"\")"
+            },
+            {
+              "row": 4,
+              "formula": "IF($P$7>0,P4/$P$7,\"\")"
+            },
+            {
+              "row": 5,
+              "formula": "IF($P$7>0,P5/$P$7,\"\")"
+            },
+            {
+              "row": 6,
+              "formula": "IF($P$7>0,P6/$P$7,\"\")"
+            },
+            {
+              "row": 7,
+              "formula": "IF($P$7>0,P7/$P$7,\"\")"
+            }
+          ],
+          "normalizedPatterns": [
+            {
+              "pattern": "IF($P$n>0,Pn/$P$n,\"\")",
+              "count": 41
+            }
+          ],
+          "referencedSheets": [],
+          "functionUsage": [
+            {
+              "fn": "IF",
+              "count": 41
+            }
+          ]
+        }
+      },
+      "externalRefs": [
+        "매출내역total",
+        "출"
+      ],
+      "functions": [
+        {
+          "fn": "SUMIFS",
+          "count": 456
+        },
+        {
+          "fn": "SUM",
+          "count": 66
+        },
+        {
+          "fn": "IF",
+          "count": 55
+        }
+      ]
+    }
+  }
+}

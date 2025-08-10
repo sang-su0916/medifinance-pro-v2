@@ -1,0 +1,102 @@
+{
+  "generatedAt": "2025-08-10T07:55:37.092Z",
+  "totals": {
+    "totalFormulas": 3950
+  },
+  "formulasBySheet": {
+    "사업장요약현황": 0,
+    "매출내역total": 34,
+    "출": 2237,
+    "분": 614,
+    "월별요약손익계산서(추정)": 666,
+    "손익계산서추이분석": 257,
+    "경영분석": 142,
+    "추가확인6.30": 0,
+    "표지": 0,
+    "작성시유의사항": 0
+  },
+  "formulasByType": {
+    "기타": 3134,
+    "IF계열": 496,
+    "집계함수": 89,
+    "INDEX/MATCH": 1,
+    "조건문": 230
+  },
+  "sheetReferences": {
+    "사업장요약현황": [],
+    "매출내역total": [
+      "사업장요약현황"
+    ],
+    "출": [
+      "분",
+      "출",
+      "사업장요약현황"
+    ],
+    "분": [],
+    "월별요약손익계산서(추정)": [
+      "매출내역total",
+      "출"
+    ],
+    "손익계산서추이분석": [
+      "사업장요약현황"
+    ],
+    "경영분석": [
+      "손익계산서추이분석"
+    ],
+    "추가확인6.30": [],
+    "표지": [],
+    "작성시유의사항": []
+  },
+  "complexFormulasTop10": [
+    {
+      "sheet": "출",
+      "cell": "J2",
+      "formula": "INDEX(분!$A$2:$K$7102,MATCH(출!C2&출!I2,분!$C$2:$C$7102&분!$I$2:$I$7102,0),10)"
+    },
+    {
+      "sheet": "월별요약손익계산서(추정)",
+      "cell": "C3",
+      "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,C$2,매출내역total!$J:$J,$B3)"
+    },
+    {
+      "sheet": "월별요약손익계산서(추정)",
+      "cell": "D3",
+      "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,D$2,매출내역total!$J:$J,$B3)"
+    },
+    {
+      "sheet": "월별요약손익계산서(추정)",
+      "cell": "E3",
+      "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,E$2,매출내역total!$J:$J,$B3)"
+    },
+    {
+      "sheet": "월별요약손익계산서(추정)",
+      "cell": "F3",
+      "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,F$2,매출내역total!$J:$J,$B3)"
+    },
+    {
+      "sheet": "월별요약손익계산서(추정)",
+      "cell": "G3",
+      "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,G$2,매출내역total!$J:$J,$B3)"
+    },
+    {
+      "sheet": "월별요약손익계산서(추정)",
+      "cell": "H3",
+      "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,H$2,매출내역total!$J:$J,$B3)"
+    },
+    {
+      "sheet": "월별요약손익계산서(추정)",
+      "cell": "I3",
+      "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,I$2,매출내역total!$J:$J,$B3)"
+    },
+    {
+      "sheet": "월별요약손익계산서(추정)",
+      "cell": "J3",
+      "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,J$2,매출내역total!$J:$J,$B3)"
+    },
+    {
+      "sheet": "월별요약손익계산서(추정)",
+      "cell": "K3",
+      "formula": "SUMIFS(매출내역total!$G:$G,매출내역total!$A:$A,K$2,매출내역total!$J:$J,$B3)"
+    }
+  ]
+}

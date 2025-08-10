@@ -1,0 +1,197 @@
+{
+  "generatedAt": "2025-08-10T11:00:41.177Z",
+  "summary": {
+    "finalScore": 26.209861860762967,
+    "passed": false,
+    "categories": {
+      "classification": {
+        "score": 89.11353032659409,
+        "passed": false
+      },
+      "calculation": {
+        "score": 0,
+        "passed": false
+      },
+      "workflow": {
+        "score": 0,
+        "passed": false
+      },
+      "performance": {
+        "efficient": {
+          "memoryEfficient": true,
+          "timeEfficient": true,
+          "scalable": true,
+          "concurrent": true
+        },
+        "passed": true
+      }
+    },
+    "processingTime": -1754823640878,
+    "memoryUsage": {
+      "start": {
+        "rss": 74596352,
+        "heapTotal": 37240832,
+        "heapUsed": 22127128,
+        "external": 4409558,
+        "arrayBuffers": 3012182
+      }
+    }
+  },
+  "detailedResults": {
+    "classification": {
+      "totalTransactions": 643,
+      "jsResults": {
+        "classified": 573,
+        "uncertain": 0,
+        "failed": 70,
+        "processingTime": 1
+      },
+      "accuracy": {
+        "overall": 89.11353032659409,
+        "averageConfidence": 0.8999999999999906,
+        "highConfidenceRate": 100,
+        "consistency": {
+          "dataIntegrity": true,
+          "ruleConsistency": true,
+          "confidenceConsistency": true,
+          "issues": []
+        }
+      },
+      "quality": {
+        "averageConfidence": 0.8999999999999906,
+        "highConfidenceRate": 100,
+        "mediumConfidenceRate": 0,
+        "lowConfidenceRate": 0,
+        "accountDistribution": {
+          "건보수익": 573
+        },
+        "confidenceByAccount": {
+          "건보수익": {
+            "average": 0.8999999999999906,
+            "min": 0.9,
+            "max": 0.9,
+            "count": 573
+          }
+        }
+      },
+      "ruleAnalysis": {
+        "ruleUsage": {
+          "건보수익분류": 573
+        },
+        "mostUsedRules": [
+          [
+            "건보수익분류",
+            573
+          ]
+        ],
+        "ruleEffectiveness": [
+          {
+            "rule": "건보수익분류",
+            "usage": 573,
+            "effectiveness": 100
+          }
+        ]
+      },
+      "recommendations": [
+        {
+          "type": "success_rate",
+          "priority": "high",
+          "message": "분류 성공률 89.1% (목표: 95% 이상)",
+          "suggestion": "실패한 케이스 분석 및 데이터 전처리 개선 필요"
+        },
+        {
+          "type": "failure_analysis",
+          "priority": "high",
+          "message": "70건의 분류 실패",
+          "suggestion": "실패 원인 분석: 데이터 품질, 규칙 부족, 예외 케이스 처리"
+        }
+      ],
+      "passesThreshold": false
+    },
+    "calculation": {
+      "totalFormulas": 0,
+      "jsResults": {
+        "executed": 0,
+        "errors": 0,
+        "processingTime": 0
+      },
+      "excelResults": {
+        "totalResults": 0
+      },
+      "accuracy": {
+        "overall": 0,
+        "byFormulaType": {},
+        "errorRate": null
+      },
+      "differences": [],
+      "passesThreshold": false
+    },
+    "workflow": {
+      "workflow": {
+        "success": false,
+        "stepsCompleted": 3,
+        "totalSteps": 7,
+        "processingTime": 4,
+        "errors": 1
+      },
+      "accuracy": {
+        "overall": 0,
+        "bySheet": {},
+        "finalBalance": 0
+      },
+      "differences": [],
+      "passesThreshold": false
+    },
+    "performance": {
+      "tests": [
+        {
+          "test": "memory",
+          "memoryUsed": 8409208,
+          "maxMemoryUsed": 64239368,
+          "passed": true
+        },
+        {
+          "test": "time",
+          "processingTime": 3,
+          "totalProcessingTime": 3,
+          "passed": true
+        },
+        {
+          "test": "scalability",
+          "passed": true,
+          "details": "대용량 데이터 처리 테스트 시뮬레이션"
+        },
+        {
+          "test": "concurrency",
+          "passed": true,
+          "details": "동시성 테스트 시뮬레이션"
+        }
+      ],
+      "overall": {
+        "memoryEfficient": true,
+        "timeEfficient": true,
+        "scalable": true,
+        "concurrent": true
+      },
+      "metrics": {
+        "avgMemoryUsage": 2102302,
+        "avgProcessingTime": 0.75
+      }
+    }
+  },
+  "recommendations": [
+    {
+      "category": "classification",
+      "priority": "high",
+      "message": "계정과목 분류 정확도 개선 필요",
+      "details": "분류 규칙 재검토 및 신뢰도 임계값 조정 고려"
+    },
+    {
+      "category": "calculation",
+      "priority": "critical",
+      "message": "SUMIFS 계산 로직 검토 필요",
+      "details": "수식 파싱 및 계산 엔진의 정확성 재검토"
+    }
+  ],
+  "issues": []
+}
