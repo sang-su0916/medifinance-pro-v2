@@ -49,7 +49,7 @@ class MediFinanceProApp {
     this.app.use(cors({
       origin: process.env.NODE_ENV === 'production' 
         ? ['https://medifinance-pro.com'] 
-        : ['http://localhost:3000', 'http://localhost:3001'],
+        : ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:3002'],
       credentials: true
     }));
     
