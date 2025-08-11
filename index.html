@@ -332,39 +332,103 @@
             }, 1000);
         }
 
-        // 실제 Excel 파일 읽기 함수
+        // 강화된 Excel/CSV 파일 읽기 함수 - 한글 깨짐 완전 방지 시스템
         async function readExcelFile(file) {
             return new Promise((resolve, reject) => {
-                const reader = new FileReader();
+                // 1단계: ArrayBuffer로 먼저 읽어서 인코딩 감지
+                const arrayReader = new FileReader();
                 
-                reader.onload = function(e) {
+                arrayReader.onload = function(e) {
                     try {
-                        // 간단한 CSV 형태로 파싱 시도
-                        const text = e.target.result;
-                        const lines = text.split('\n');
+                        const arrayBuffer = e.target.result;
+                        const uint8Array = new Uint8Array(arrayBuffer);
                         
-                        // CSV 형태의 데이터 파싱
+                        // 인코딩 감지 및 디코딩
+                        let text = '';
+                        let decodingSuccess = false;
+                        
+                        // UTF-8 BOM 체크
+                        if (uint8Array.length >= 3 && 
+                            uint8Array[0] === 0xEF && 
+                            uint8Array[1] === 0xBB && 
+                            uint8Array[2] === 0xBF) {
+                            console.log('UTF-8 BOM 감지됨');
+                            const decoder = new TextDecoder('utf-8');
+                            text = decoder.decode(uint8Array.slice(3)); // BOM 제거
+                            decodingSuccess = true;
+                        }
+                        
+                        // UTF-16 BOM 체크
+                        else if (uint8Array.length >= 2 && 
+                                ((uint8Array[0] === 0xFF && uint8Array[1] === 0xFE) ||
+                                 (uint8Array[0] === 0xFE && uint8Array[1] === 0xFF))) {
+                            console.log('UTF-16 BOM 감지됨');
+                            const isLittleEndian = uint8Array[0] === 0xFF;
+                            const decoder = new TextDecoder(isLittleEndian ? 'utf-16le' : 'utf-16be');
+                            text = decoder.decode(uint8Array.slice(2)); // BOM 제거
+                            decodingSuccess = true;
+                        }
+                        
+                        // BOM 없는 경우 - 다양한 인코딩 시도
+                        if (!decodingSuccess) {
+                            const encodings = ['utf-8', 'euc-kr', 'cp949', 'iso-8859-1'];
+                            
+                            for (const encoding of encodings) {
+                                try {
+                                    console.log(`${encoding} 디코딩 시도...`);
+                                    const decoder = new TextDecoder(encoding);
+                                    text = decoder.decode(uint8Array);
+                                    
+                                    // 한글 텍스트 검증 (깨진 문자 패턴 체크)
+                                    if (!text.includes('癤�') && 
+                                        !text.includes('占쎌쐻') && 
+                                        !text.includes('占쎄쿐') && 
+                                        !text.includes('占쎈릭') &&
+                                        text.length > 0) {
+                                        console.log(`${encoding} 디코딩 성공!`);
+                                        decodingSuccess = true;
+                                        break;
+                                    }
+                                } catch (decodingError) {
+                                    console.warn(`${encoding} 디코딩 실패:`, decodingError.message);
+                                    continue;
+                                }
+                            }
+                        }
+                        
+                        // 모든 디코딩 실패 시 기본 UTF-8 사용
+                        if (!decodingSuccess) {
+                            console.warn('모든 인코딩 시도 실패, UTF-8 강제 사용');
+                            const decoder = new TextDecoder('utf-8');
+                            text = decoder.decode(uint8Array);
+                        }
+                        
+                        // 2단계: 파일 형식별 처리
+                        console.log(`파일 디코딩 완료. 길이: ${text.length}`);
+                        
                         if (text.includes(',')) {
+                            console.log('CSV 형식 데이터 감지됨');
                             const data = parseCSVData(text);
                             resolve(data);
                         } else {
-                            reject('Excel 파일 형식을 인식할 수 없습니다.');
+                            console.error('CSV 형식을 찾을 수 없음');
+                            reject('Excel 파일을 CSV 형식으로 저장한 후 업로드해주세요.');
                         }
+                        
                     } catch (error) {
+                        console.error('파일 읽기 오류:', error);
                         reject('파일 읽기 오류: ' + error.message);
                     }
                 };
                 
-                reader.onerror = function() {
+                arrayReader.onerror = function() {
+                    console.error('파일 읽기 실패');
                     reject('파일 읽기 실패');
                 };
                 
-                // 파일 읽기 - 인코딩 자동 감지 시도
-                if (file.name.toLowerCase().includes('.csv')) {
-                    reader.readAsText(file, 'UTF-8');
-                } else {
-                    reader.readAsText(file, 'UTF-8'); // Excel은 복잡하므로 일단 텍스트로 시도
-                }
+                // ArrayBuffer로 파일 읽기 시작
+                console.log(`파일 읽기 시작: ${file.name} (${file.size} bytes)`);
+                arrayReader.readAsArrayBuffer(file);
             });
         }
 
@@ -452,36 +516,91 @@
         
         // CSV 데이터 파싱 함수
         function parseCSVData(csvText) {
-            // BOM 제거 및 인코딩 정리
-            const cleanText = csvText.replace(/\uFEFF/g, '').trim();
-            const lines = cleanText.split('\n');
-            const headers = lines[0].split(',').map(h => h.trim().replace(/[\"\']/g, ''));
+            console.log('CSV 파싱 시작...');
+            
+            // 1단계: 강화된 텍스트 정리 - 모든 종류의 BOM과 특수문자 제거
+            let cleanText = csvText
+                .replace(/^\uFEFF/, '')      // UTF-8 BOM
+                .replace(/^\uFFFE/, '')      // UTF-16 BE BOM
+                .replace(/^\uEFBBBF/, '')    // UTF-8 BOM (바이트 형태)
+                .replace(/癤�/g, '')         // 깨진 BOM 문자
+                .replace(/占쎌쐻/g, '')      // EUC-KR 깨짐 문자
+                .replace(/占쎄쿐/g, '')      // EUC-KR 깨짐 문자
+                .replace(/占쎈릭/g, '')      // EUC-KR 깨짐 문자
+                .trim();
+                
+            console.log(`정리된 텍스트 길이: ${cleanText.length}`);
+            console.log(`첫 100자: ${cleanText.substring(0, 100)}`);
+            
+            // 2단계: 라인 분리 - 다양한 줄바꿈 처리
+            const lines = cleanText.split(/\r\n|\r|\n/);
+            console.log(`총 라인 수: ${lines.length}`);
+            
+            if (lines.length === 0 || !lines[0]) {
+                throw new Error('CSV 파일이 비어있거나 잘못된 형식입니다.');
+            }
+            
+            // 3단계: 헤더 파싱 - 강화된 헤더 처리
+            const headerLine = lines[0].trim();
+            console.log(`헤더 라인: ${headerLine}`);
+            
+            const headers = headerLine.split(',').map(h => 
+                h.trim()
+                 .replace(/^["']/, '')
+                 .replace(/["']$/, '')
+                 .replace(/\s+/g, ' ')
+                 .trim()
+            );
+            
+            console.log(`파싱된 헤더:`, headers);
             
             const transactions = [];
             let totalRevenue = 0;
             let totalExpense = 0;
             const monthlyData = {};
             
-            for (let i = 1; i < lines.length && i < 100; i++) { // 최대 100행만 처리
+            // 4단계: 데이터 파싱 - 개선된 CSV 파서
+            for (let i = 1; i < lines.length && i < 1000; i++) { // 최대 1000행으로 확장
                 if (!lines[i].trim()) continue; // 빈 라인 건너뛰기
                 
-                // CSV 파싱 개선 - 따옴표 처리
+                const line = lines[i].trim();
+                console.log(`라인 ${i} 파싱: ${line.substring(0, 50)}...`);
+                
+                // 강화된 CSV 파싱 - 복잡한 따옴표와 콤마 처리
                 const values = [];
                 let current = '';
                 let inQuotes = false;
+                let quoteChar = '';
                 
-                for (let j = 0; j < lines[i].length; j++) {
-                    const char = lines[i][j];
-                    if (char === '"' || char === "'") {
-                        inQuotes = !inQuotes;
-                    } else if (char === ',' && !inQuotes) {
-                        values.push(current.trim().replace(/[\"\']/g, ''));
+                for (let j = 0; j < line.length; j++) {
+                    const char = line[j];
+                    
+                    // 따옴표 처리
+                    if ((char === '"' || char === "'") && !inQuotes) {
+                        inQuotes = true;
+                        quoteChar = char;
+                        continue;
+                    } else if (char === quoteChar && inQuotes) {
+                        // 연속된 따옴표 처리 (escaped quotes)
+                        if (j + 1 < line.length && line[j + 1] === quoteChar) {
+                            current += char;
+                            j++; // 다음 문자 건너뛰기
+                        } else {
+                            inQuotes = false;
+                            quoteChar = '';
+                        }
+                        continue;
+                    }
+                    
+                    // 콤마 처리
+                    if (char === ',' && !inQuotes) {
+                        values.push(current.trim());
                         current = '';
                     } else {
                         current += char;
                     }
                 }
-                values.push(current.trim().replace(/[\"\']/g, ''));
+                values.push(current.trim());
                 
                 if (values.length >= 3) {
                     const amount = parseFloat(values[2].replace(/[^\d.-]/g, '')) || 0;
