@@ -359,7 +359,7 @@
                     reject('파일 읽기 실패');
                 };
                 
-                // Excel 파일인 경우 텍스트로 읽기 시도
+                // 파일 읽기 - 인코딩 자동 감지 시도
                 if (file.name.toLowerCase().includes('.csv')) {
                     reader.readAsText(file, 'UTF-8');
                 } else {
@@ -370,8 +370,10 @@
 
         // CSV 데이터 파싱 함수
         function parseCSVData(csvText) {
-            const lines = csvText.trim().split('\n');
-            const headers = lines[0].split(',').map(h => h.trim());
+            // BOM 제거 및 인코딩 정리
+            const cleanText = csvText.replace(/\uFEFF/g, '').trim();
+            const lines = cleanText.split('\n');
+            const headers = lines[0].split(',').map(h => h.trim().replace(/[\"\']/g, ''));
             
             const transactions = [];
             let totalRevenue = 0;
@@ -379,14 +381,33 @@
             const monthlyData = {};
             
             for (let i = 1; i < lines.length && i < 100; i++) { // 최대 100행만 처리
-                const values = lines[i].split(',');
+                if (!lines[i].trim()) continue; // 빈 라인 건너뛰기
+                
+                // CSV 파싱 개선 - 따옴표 처리
+                const values = [];
+                let current = '';
+                let inQuotes = false;
+                
+                for (let j = 0; j < lines[i].length; j++) {
+                    const char = lines[i][j];
+                    if (char === '"' || char === "'") {
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        values.push(current.trim().replace(/[\"\']/g, ''));
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                values.push(current.trim().replace(/[\"\']/g, ''));
+                
                 if (values.length >= 3) {
-                    const amount = parseFloat(values[2]) || 0;
+                    const amount = parseFloat(values[2].replace(/[^\d.-]/g, '')) || 0;
                     const month = values[0] ? values[0].split('-')[1] || '1' : '1';
                     
                     transactions.push({
                         date: values[0] || '',
-                        description: values[1] || '',
+                        description: values[1] || '상세내역 없음',
                         amount: amount,
                         month: month
                     });
@@ -654,7 +675,7 @@
             const container = document.getElementById('resultsContainer');
             container.style.display = 'block';
             container.innerHTML = `
-                <h4 style="color: #3498db; margin-bottom: 15px;">🏥 병원 재무 샘플 데이터 (실제 벌운에서 발취)</h4>
+                <h4 style="color: #3498db; margin-bottom: 15px;">🏥 병원 재무 샘플 데이터 (실제 병원에서 발췌)</h4>
                 
                 <!-- 매출내역 -->
                 <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #27ae60;">
