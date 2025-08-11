@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏥 MediFinance Pro v2 - 병원 재무 자동화 시스템</title>
+    <!-- SheetJS 라이브러리 추가 - Excel 파일 완벽 지원 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -332,104 +334,246 @@
             }, 1000);
         }
 
-        // 강화된 Excel/CSV 파일 읽기 함수 - 한글 깨짐 완전 방지 시스템
+        // 완전히 새로운 Excel/CSV 파일 읽기 시스템 - SheetJS + 멀티 인코딩 지원
         async function readExcelFile(file) {
             return new Promise((resolve, reject) => {
-                // 1단계: ArrayBuffer로 먼저 읽어서 인코딩 감지
-                const arrayReader = new FileReader();
+                console.log(`파일 처리 시작: ${file.name} (${file.size} bytes)`);
                 
-                arrayReader.onload = function(e) {
-                    try {
-                        const arrayBuffer = e.target.result;
-                        const uint8Array = new Uint8Array(arrayBuffer);
-                        
-                        // 인코딩 감지 및 디코딩
-                        let text = '';
-                        let decodingSuccess = false;
-                        
-                        // UTF-8 BOM 체크
-                        if (uint8Array.length >= 3 && 
-                            uint8Array[0] === 0xEF && 
-                            uint8Array[1] === 0xBB && 
-                            uint8Array[2] === 0xBF) {
-                            console.log('UTF-8 BOM 감지됨');
-                            const decoder = new TextDecoder('utf-8');
-                            text = decoder.decode(uint8Array.slice(3)); // BOM 제거
-                            decodingSuccess = true;
-                        }
-                        
-                        // UTF-16 BOM 체크
-                        else if (uint8Array.length >= 2 && 
-                                ((uint8Array[0] === 0xFF && uint8Array[1] === 0xFE) ||
-                                 (uint8Array[0] === 0xFE && uint8Array[1] === 0xFF))) {
-                            console.log('UTF-16 BOM 감지됨');
-                            const isLittleEndian = uint8Array[0] === 0xFF;
-                            const decoder = new TextDecoder(isLittleEndian ? 'utf-16le' : 'utf-16be');
-                            text = decoder.decode(uint8Array.slice(2)); // BOM 제거
-                            decodingSuccess = true;
-                        }
-                        
-                        // BOM 없는 경우 - 다양한 인코딩 시도
-                        if (!decodingSuccess) {
-                            const encodings = ['utf-8', 'euc-kr', 'cp949', 'iso-8859-1'];
-                            
-                            for (const encoding of encodings) {
-                                try {
-                                    console.log(`${encoding} 디코딩 시도...`);
-                                    const decoder = new TextDecoder(encoding);
-                                    text = decoder.decode(uint8Array);
-                                    
-                                    // 한글 텍스트 검증 (깨진 문자 패턴 체크)
-                                    if (!text.includes('癤�') && 
-                                        !text.includes('占쎌쐻') && 
-                                        !text.includes('占쎄쿐') && 
-                                        !text.includes('占쎈릭') &&
-                                        text.length > 0) {
-                                        console.log(`${encoding} 디코딩 성공!`);
-                                        decodingSuccess = true;
-                                        break;
-                                    }
-                                } catch (decodingError) {
-                                    console.warn(`${encoding} 디코딩 실패:`, decodingError.message);
-                                    continue;
-                                }
-                            }
-                        }
-                        
-                        // 모든 디코딩 실패 시 기본 UTF-8 사용
-                        if (!decodingSuccess) {
-                            console.warn('모든 인코딩 시도 실패, UTF-8 강제 사용');
-                            const decoder = new TextDecoder('utf-8');
-                            text = decoder.decode(uint8Array);
-                        }
-                        
-                        // 2단계: 파일 형식별 처리
-                        console.log(`파일 디코딩 완료. 길이: ${text.length}`);
-                        
-                        if (text.includes(',')) {
-                            console.log('CSV 형식 데이터 감지됨');
-                            const data = parseCSVData(text);
-                            resolve(data);
-                        } else {
-                            console.error('CSV 형식을 찾을 수 없음');
-                            reject('Excel 파일을 CSV 형식으로 저장한 후 업로드해주세요.');
-                        }
-                        
-                    } catch (error) {
-                        console.error('파일 읽기 오류:', error);
-                        reject('파일 읽기 오류: ' + error.message);
-                    }
-                };
+                // 파일 확장자 확인
+                const fileName = file.name.toLowerCase();
+                const isExcel = fileName.endsWith('.xlsx') || fileName.endsWith('.xls');
+                const isCsv = fileName.endsWith('.csv');
                 
-                arrayReader.onerror = function() {
-                    console.error('파일 읽기 실패');
-                    reject('파일 읽기 실패');
-                };
-                
-                // ArrayBuffer로 파일 읽기 시작
-                console.log(`파일 읽기 시작: ${file.name} (${file.size} bytes)`);
-                arrayReader.readAsArrayBuffer(file);
+                if (isExcel) {
+                    // Excel 파일 처리 - SheetJS 사용
+                    processExcelFile(file, resolve, reject);
+                } else if (isCsv) {
+                    // CSV 파일 처리 - 강화된 인코딩 처리
+                    processCsvFile(file, resolve, reject);
+                } else {
+                    reject('지원하지 않는 파일 형식입니다. Excel(.xlsx, .xls) 또는 CSV(.csv) 파일을 업로드해주세요.');
+                }
             });
+        }
+
+        // Excel 파일 처리 함수 - SheetJS 활용
+        function processExcelFile(file, resolve, reject) {
+            console.log('Excel 파일 처리 시작...');
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    // SheetJS로 Excel 파일 파싱
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { 
+                        type: 'array',
+                        codepage: 65001, // UTF-8 강제 설정
+                        cellText: true,
+                        cellDates: true
+                    });
+                    
+                    // 첫 번째 시트 선택
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    
+                    console.log(`Excel 시트 처리: ${sheetName}`);
+                    
+                    // CSV 형식으로 변환
+                    const csvText = XLSX.utils.sheet_to_csv(worksheet, {
+                        forceQuotes: false,
+                        dateNF: 'yyyy-mm-dd'
+                    });
+                    
+                    console.log(`Excel → CSV 변환 완료. 길이: ${csvText.length}`);
+                    console.log(`변환된 데이터 샘플:\n${csvText.substring(0, 500)}`);
+                    
+                    // CSV 데이터 파싱
+                    const parsedData = parseCSVData(csvText);
+                    resolve(parsedData);
+                    
+                } catch (error) {
+                    console.error('Excel 파일 처리 오류:', error);
+                    reject('Excel 파일 처리 중 오류가 발생했습니다: ' + error.message);
+                }
+            };
+            
+            reader.onerror = function() {
+                console.error('Excel 파일 읽기 실패');
+                reject('Excel 파일을 읽을 수 없습니다.');
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+
+        // CSV 파일 처리 함수 - 고급 인코딩 처리
+        function processCsvFile(file, resolve, reject) {
+            console.log('CSV 파일 처리 시작...');
+            
+            // 1단계: ArrayBuffer로 읽어서 인코딩 자동 감지
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const arrayBuffer = e.target.result;
+                    const uint8Array = new Uint8Array(arrayBuffer);
+                    
+                    console.log(`원본 바이트 크기: ${uint8Array.length}`);
+                    console.log(`첫 10바이트: ${Array.from(uint8Array.slice(0, 10)).map(b => '0x' + b.toString(16).padStart(2, '0')).join(' ')}`);
+                    
+                    // 고급 인코딩 감지 및 디코딩
+                    const decodedText = detectAndDecodeText(uint8Array);
+                    
+                    console.log(`디코딩 완료. 길이: ${decodedText.length}`);
+                    console.log(`디코딩된 샘플:\n${decodedText.substring(0, 500)}`);
+                    
+                    // CSV 데이터 파싱
+                    const parsedData = parseCSVData(decodedText);
+                    resolve(parsedData);
+                    
+                } catch (error) {
+                    console.error('CSV 파일 처리 오류:', error);
+                    reject('CSV 파일 처리 중 오류가 발생했습니다: ' + error.message);
+                }
+            };
+            
+            reader.onerror = function() {
+                console.error('CSV 파일 읽기 실패');
+                reject('CSV 파일을 읽을 수 없습니다.');
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+
+        // 고급 텍스트 인코딩 감지 및 디코딩 함수
+        function detectAndDecodeText(uint8Array) {
+            console.log('텍스트 디코딩 시작...');
+            
+            // BOM 패턴 체크
+            const bomPatterns = [
+                { bytes: [0xEF, 0xBB, 0xBF], encoding: 'utf-8', name: 'UTF-8 BOM' },
+                { bytes: [0xFF, 0xFE], encoding: 'utf-16le', name: 'UTF-16 LE BOM' },
+                { bytes: [0xFE, 0xFF], encoding: 'utf-16be', name: 'UTF-16 BE BOM' },
+                { bytes: [0xFF, 0xFE, 0x00, 0x00], encoding: 'utf-32le', name: 'UTF-32 LE BOM' },
+                { bytes: [0x00, 0x00, 0xFE, 0xFF], encoding: 'utf-32be', name: 'UTF-32 BE BOM' }
+            ];
+            
+            // BOM 감지
+            for (const pattern of bomPatterns) {
+                if (uint8Array.length >= pattern.bytes.length) {
+                    const match = pattern.bytes.every((byte, index) => uint8Array[index] === byte);
+                    if (match) {
+                        console.log(`${pattern.name} 감지됨`);
+                        try {
+                            const decoder = new TextDecoder(pattern.encoding);
+                            return decoder.decode(uint8Array.slice(pattern.bytes.length));
+                        } catch (error) {
+                            console.warn(`${pattern.name} 디코딩 실패:`, error);
+                        }
+                    }
+                }
+            }
+            
+            // BOM 없는 경우 - 다양한 인코딩 시도 (한국어 최적화)
+            const encodingPriority = [
+                'utf-8',
+                'euc-kr',
+                'cp949',
+                'iso-2022-kr',
+                'x-windows-949',
+                'ks_c_5601-1987',
+                'iso-8859-1',
+                'ascii'
+            ];
+            
+            for (const encoding of encodingPriority) {
+                try {
+                    console.log(`${encoding} 디코딩 시도...`);
+                    
+                    // 브라우저 지원 인코딩만 시도
+                    if (!isEncodingSupported(encoding)) {
+                        console.warn(`${encoding}는 브라우저에서 지원하지 않음`);
+                        continue;
+                    }
+                    
+                    const decoder = new TextDecoder(encoding, { fatal: false });
+                    const text = decoder.decode(uint8Array);
+                    
+                    // 디코딩 품질 검증
+                    const quality = evaluateDecodingQuality(text, encoding);
+                    console.log(`${encoding} 디코딩 품질: ${quality.score}점`);
+                    
+                    if (quality.score >= 80) { // 80점 이상이면 성공으로 판단
+                        console.log(`${encoding} 디코딩 성공! (품질: ${quality.score}점)`);
+                        return text;
+                    }
+                    
+                } catch (error) {
+                    console.warn(`${encoding} 디코딩 실패:`, error.message);
+                }
+            }
+            
+            // 모든 시도 실패 시 UTF-8 강제 사용 (에러 허용)
+            console.warn('모든 인코딩 시도 실패, UTF-8 에러 허용 모드로 시도');
+            const decoder = new TextDecoder('utf-8', { fatal: false });
+            return decoder.decode(uint8Array);
+        }
+        
+        // 브라우저 인코딩 지원 여부 확인
+        function isEncodingSupported(encoding) {
+            try {
+                new TextDecoder(encoding);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+        
+        // 디코딩 품질 평가 함수
+        function evaluateDecodingQuality(text, encoding) {
+            let score = 100;
+            const issues = [];
+            
+            // 깨진 문자 패턴 감지
+            const brokenPatterns = [
+                /癤�/g,
+                /占쎌쐻/g,
+                /占쎄쿐/g,
+                /占쎈릭/g,
+                /\uFFFD/g, // 대체 문자
+                /[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g // 제어 문자
+            ];
+            
+            for (const pattern of brokenPatterns) {
+                const matches = text.match(pattern);
+                if (matches) {
+                    score -= matches.length * 10;
+                    issues.push(`깨진 문자 패턴 ${matches.length}개 발견`);
+                }
+            }
+            
+            // 한글 문자 비율 확인 (한국어 파일인 경우)
+            const koreanChars = text.match(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g);
+            const totalChars = text.replace(/\s/g, '').length;
+            
+            if (koreanChars && totalChars > 0) {
+                const koreanRatio = koreanChars.length / totalChars;
+                if (koreanRatio > 0.1) { // 한글이 10% 이상이면 한국어 문서로 판단
+                    if (encoding === 'utf-8' && koreanRatio > 0.3) score += 20;
+                    else if ((encoding === 'euc-kr' || encoding === 'cp949') && koreanRatio > 0.3) score += 15;
+                }
+            }
+            
+            // 유효한 CSV 구조 확인
+            if (text.includes(',') && text.includes('\n')) {
+                score += 10;
+            }
+            
+            return {
+                score: Math.max(0, Math.min(100, score)),
+                issues: issues,
+                koreanRatio: koreanChars ? koreanChars.length / totalChars : 0
+            };
         }
 
         // 병원 특화 거래 분류 시스템 (100% 정확도 목표)
