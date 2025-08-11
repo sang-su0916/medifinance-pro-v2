@@ -1,28 +1,19 @@
 {
-  "name": "medifinance-pro-v2",
-  "version": "2.0.0",
-  "description": "병원 재무 데이터 자동화 시스템",
-  "main": "backend/src/index.js",
+  "name": "medifinance-pro-v2-static",
+  "version": "2.1.0",
+  "description": "병원 재무 데이터 자동화 시스템 - 정적 웹사이트",
+  "main": "index.html",
   "scripts": {
-    "start": "node backend/src/index.js",
-    "dev": "nodemon backend/src/index.js",
-    "build": "echo 'No build step needed'",
-    "vercel-build": "echo 'Vercel build completed'"
-  },
-  "engines": {
-    "node": "18.x"
-  },
-  "dependencies": {
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.20"
+    "build": "echo 'Static site - no build needed'",
+    "start": "echo 'Static site ready'"
   },
   "keywords": [
     "hospital",
     "finance", 
     "automation",
     "excel",
-    "classification"
+    "classification",
+    "static-website"
   ],
   "author": "MediFinance Team",
   "license": "MIT"
