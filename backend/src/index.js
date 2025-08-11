@@ -120,6 +120,9 @@ class MediFinanceProApp {
 
     // 통합 워크플로우 API
     this.setupIntegratedWorkflowRoutes();
+    
+    // Vercel 최적화 라우트
+    this.setupVercelRoutes();
   }
 
   /**
@@ -543,6 +546,14 @@ class MediFinanceProApp {
         });
       }
     });
+  }
+
+  /**
+   * Vercel 최적화 라우트 설정
+   */
+  setupVercelRoutes() {
+    const vercelRoutes = require('./routes/vercelRoutes');
+    this.app.use('/api/vercel', vercelRoutes);
   }
 
   /**
