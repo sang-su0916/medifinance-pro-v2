@@ -529,6 +529,44 @@
             }
         }
         
+        // 한글 텍스트 안전 처리 함수
+        function sanitizeKoreanText(text) {
+            if (!text || typeof text !== 'string') {
+                return '정보없음';
+            }
+            
+            // 1단계: 깨진 문자 패턴 제거 및 복구
+            let cleanText = text
+                .replace(/癤�/g, '')         // UTF-8 BOM 깨짐
+                .replace(/占쎌쐻/g, '')      // EUC-KR 깨짐
+                .replace(/占쎄쿐/g, '')      // EUC-KR 깨짐
+                .replace(/占쎈릭/g, '')      // EUC-KR 깨짐
+                .replace(/\uFFFD/g, '')      // 대체 문자 제거
+                .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '') // 제어문자 제거
+                .replace(/[^\w\s가-힣ㄱ-ㅎㅏ-ㅣ.,!?%-]/g, '') // 유효한 문자만 유지
+                .trim();
+            
+            // 2단계: 빈 문자열이거나 의미 없는 문자만 있는 경우 처리
+            if (!cleanText || cleanText.length < 2) {
+                return '거래내역';
+            }
+            
+            // 3단계: 너무 긴 텍스트 줄임
+            if (cleanText.length > 50) {
+                cleanText = cleanText.substring(0, 47) + '...';
+            }
+            
+            // 4단계: HTML 안전 처리
+            cleanText = cleanText
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+            
+            return cleanText;
+        }
+
         // 디코딩 품질 평가 함수
         function evaluateDecodingQuality(text, encoding) {
             let score = 100;
@@ -767,11 +805,27 @@
                         totalExpense += Math.abs(amount);
                     }
                     
-                    // 월별 집계
-                    if (!monthlyData[month]) {
-                        monthlyData[month] = 0;
+                    // 월별 집계 - 올바른 날짜 파싱
+                    let monthKey = '1'; // 기본값
+                    if (values[0] && values[0].includes('-')) {
+                        const dateParts = values[0].split('-');
+                        if (dateParts.length >= 2 && !isNaN(parseInt(dateParts[1]))) {
+                            monthKey = parseInt(dateParts[1]).toString();
+                        }
                     }
-                    monthlyData[month] += Math.abs(amount);
+                    
+                    if (!monthlyData[monthKey]) {
+                        monthlyData[monthKey] = { total: 0, revenue: 0, expense: 0, count: 0 };
+                    }
+                    
+                    monthlyData[monthKey].total += Math.abs(amount);
+                    monthlyData[monthKey].count += 1;
+                    
+                    if (amount > 0) {
+                        monthlyData[monthKey].revenue += amount;
+                    } else {
+                        monthlyData[monthKey].expense += Math.abs(amount);
+                    }
                 }
             }
             
@@ -798,9 +852,12 @@
             const container = document.getElementById('resultsContainer');
             container.style.display = 'block';
             
-            // 실제 데이터로 월별 계산
+            // 실제 데이터로 월별 계산 - 강화된 처리
             const months = ['1', '2', '3', '4', '5', '6'];
-            const monthlyRevenues = months.map(month => data.monthlyData[month] || 0);
+            const monthlyRevenues = months.map(month => {
+                const monthData = data.monthlyData[month];
+                return monthData ? monthData.total : 0;
+            });
             const avgRevenue = monthlyRevenues.reduce((a, b) => a + b, 0) / 6;
             
             container.innerHTML = `
@@ -857,17 +914,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            ${data.transactions.slice(0, 5).map(t => `
-                                <tr><td style="border: 1px solid #ffeaa7; padding: 5px;">${t.date}</td>
-                                    <td style="border: 1px solid #ffeaa7; padding: 5px;">${t.description}</td>
+                            ${data.transactions.slice(0, 5).map(t => {
+                                // 안전한 한글 텍스트 처리
+                                const safeDescription = sanitizeKoreanText(t.description || '상세내역 없음');
+                                const safeDate = sanitizeKoreanText(t.date || '날짜미상');
+                                const categoryName = sanitizeKoreanText(t.category?.sub || '미분류');
+                                
+                                return `
+                                <tr>
+                                    <td style="border: 1px solid #ffeaa7; padding: 5px;">${safeDate}</td>
+                                    <td style="border: 1px solid #ffeaa7; padding: 5px; max-width: 200px; word-break: break-word;">${safeDescription}</td>
                                     <td style="border: 1px solid #ffeaa7; padding: 5px; text-align: right;">${t.amount.toLocaleString()}원</td>
                                     <td style="border: 1px solid #ffeaa7; padding: 5px; text-align: center;">${t.month}월</td>
                                     <td style="border: 1px solid #ffeaa7; padding: 5px; text-align: center; font-size: 11px;">
                                         <span style="background: ${t.category?.accuracy >= 100 ? '#28a745' : t.category?.accuracy >= 95 ? '#ffc107' : '#6c757d'}; color: white; padding: 2px 6px; border-radius: 10px;">
-                                            ${t.category?.sub || '미분류'} (${t.category?.accuracy || 0}%)
+                                            ${categoryName} (${t.category?.accuracy || 0}%)
                                         </span>
-                                    </td></tr>
-                            `).join('')}
+                                    </td>
+                                </tr>`;
+                            }).join('')}
                         </tbody>
                     </table>
                 </div>
