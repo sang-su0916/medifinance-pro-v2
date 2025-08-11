@@ -13,7 +13,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         .card {
             background: rgba(255, 255, 255, 0.95);
             padding: 30px;
@@ -872,8 +872,8 @@
             switch(format) {
                 case 'excel':
                     content = generateExcelContent(results);
-                    filename = 'MediFinance_Pro_v2_Report.csv';
-                    mimeType = 'text/csv;charset=utf-8;';
+                    filename = 'MediFinance_Pro_v2_Report.xls';
+                    mimeType = 'application/vnd.ms-excel;charset=utf-8;';
                     break;
                 case 'pdf':
                     alert('📄 PDF 다운로드 기능은 개발 중입니다. Excel 형식을 사용해주세요.');
@@ -904,6 +904,8 @@
         }
 
         function generateExcelContent(results) {
+            // Excel에서 올바르게 열리도록 UTF-8 BOM 추가
+            const BOM = '\uFEFF';
             // 실제 업로드된 데이터가 있는지 확인 (전역 변수나 데이터 저장소에서)
             const actualData = window.lastProcessedData;
             
@@ -912,10 +914,10 @@
                 const months = ['1', '2', '3', '4', '5', '6'];
                 const monthlyData = months.map(m => actualData.monthlyData[m] || 0);
                 
-                return `🏥 업로드 파일 기반 실제 재무분석 결과\n생성일시,${new Date().toLocaleDateString('ko-KR')}\n파일명,${actualData.fileName || '업로드된 파일'}\n\n=== 실제 데이터 분석 요약 ===\n총 거래 건수,${actualData.transactionCount}건\n총 수익,${actualData.totalRevenue.toLocaleString()}원\n총 비용,${actualData.totalExpense.toLocaleString()}원\n순이익,${(actualData.totalRevenue - actualData.totalExpense).toLocaleString()}원\n\n=== 월별 거래액 분석 ===\n구분,1월,2월,3월,4월,5월,6월\n월별 거래액,${monthlyData.join(',')}\n\n=== 실제 거래내역 샘플 (최근 10건) ===\n날짜,거래내역,금액,월\n${actualData.transactions.slice(0, 10).map(t => `${t.date},${t.description},${t.amount},${t.month}월`).join('\n')}\n\n* 본 보고서는 실제 업로드하신 파일의 데이터를 분석한 결과입니다.\n* MediFinance Pro v2 시스템에 의해 자동 생성되었습니다.`;
+                return BOM + `🏥 업로드 파일 기반 실제 재무분석 결과\n생성일시,${new Date().toLocaleDateString('ko-KR')}\n파일명,${actualData.fileName || '업로드된 파일'}\n\n=== 실제 데이터 분석 요약 ===\n총 거래 건수,${actualData.transactionCount}건\n총 수익,${actualData.totalRevenue.toLocaleString()}원\n총 비용,${actualData.totalExpense.toLocaleString()}원\n순이익,${(actualData.totalRevenue - actualData.totalExpense).toLocaleString()}원\n\n=== 월별 거래액 분석 ===\n구분,1월,2월,3월,4월,5월,6월\n월별 거래액,${monthlyData.join(',')}\n\n=== 실제 거래내역 샘플 (최근 10건) ===\n날짜,거래내역,금액,월\n${actualData.transactions.slice(0, 10).map(t => `${t.date},${t.description},${t.amount},${t.month}월`).join('\n')}\n\n* 본 보고서는 실제 업로드하신 파일의 데이터를 분석한 결과입니다.\n* MediFinance Pro v2 시스템에 의해 자동 생성되었습니다.`;
             } else {
                 // 기본 샘플 데이터 사용
-                return `🏥 병원 재무보고서 자동 생성 결과\n생성일시,${new Date().toLocaleDateString('ko-KR')}\n\n=== 월별요약손익계산서(추정) ===\n구분,1월,2월,3월,4월,5월,6월\n기타수입,52223360,47453480,47316780,46397030,55632700,65324470\n매출액,52223360,47453480,47316780,46397030,55632700,65324470\n매출원가,1430100,1409680,1715300,2005850,3366000,2845200\n직원급여,11538030,11920190,12045240,12050240,12327850,12458320\n영업이익,39255230,34123610,33556240,32340940,39938850,50020950\n\n=== 손익계산서 추이분석 ===\n구분,2021년(3기확정),2022년(4기확정),2023년(5기추정),증감율\n일반진료수입,90386420,129766700,0,-100.0%\n의료보험수입,258203150,298802440,0,-100.0%\n기타수입,192069180,223134360,314347820,+40.8%\n매출액,540658750,651703500,314347820,-51.8%\n\n=== 주요 경영분석 ===\n월별 매출액 추이:\n월,2022년,2023년,증감\n1월,52147470,52223360,75890\n2월,48512890,47453480,-1059410\n3월,47528050,47316780,-211270\n4월,57110170,46397030,-10713140\n\n인건비 추세 분석:\n구분,2021년,2022년,2023년\n직원급여,81131855,89256420,72339870\n퇴직급여,6973445,8124350,7825600\n인건비 계,88386380,98125450,81254780\n인건비율,16.35%,15.05%,25.86%\n\n=== 처리 성과 요약 ===\n총 거래 건수,3466건\n분류 정확도,89.55%\n계산 정확도,100%\n처리 시간,58초\n시간 절약율,99.7%\n\n* 본 보고서는 MediFinance Pro v2 시스템에 의해 자동 생성되었습니다.\n* 3,466건의 실제 병원 거래내역을 기반으로 분석되었습니다.`;
+                return BOM + `🏥 병원 재무보고서 자동 생성 결과\n생성일시,${new Date().toLocaleDateString('ko-KR')}\n\n=== 월별요약손익계산서(추정) ===\n구분,1월,2월,3월,4월,5월,6월\n기타수입,52223360,47453480,47316780,46397030,55632700,65324470\n매출액,52223360,47453480,47316780,46397030,55632700,65324470\n매출원가,1430100,1409680,1715300,2005850,3366000,2845200\n직원급여,11538030,11920190,12045240,12050240,12327850,12458320\n영업이익,39255230,34123610,33556240,32340940,39938850,50020950\n\n=== 손익계산서 추이분석 ===\n구분,2021년(3기확정),2022년(4기확정),2023년(5기추정),증감율\n일반진료수입,90386420,129766700,0,-100.0%\n의료보험수입,258203150,298802440,0,-100.0%\n기타수입,192069180,223134360,314347820,+40.8%\n매출액,540658750,651703500,314347820,-51.8%\n\n=== 주요 경영분석 ===\n월별 매출액 추이:\n월,2022년,2023년,증감\n1월,52147470,52223360,75890\n2월,48512890,47453480,-1059410\n3월,47528050,47316780,-211270\n4월,57110170,46397030,-10713140\n\n인건비 추세 분석:\n구분,2021년,2022년,2023년\n직원급여,81131855,89256420,72339870\n퇴직급여,6973445,8124350,7825600\n인건비 계,88386380,98125450,81254780\n인건비율,16.35%,15.05%,25.86%\n\n=== 처리 성과 요약 ===\n총 거래 건수,3466건\n분류 정확도,89.55%\n계산 정확도,100%\n처리 시간,58초\n시간 절약율,99.7%\n\n* 본 보고서는 MediFinance Pro v2 시스템에 의해 자동 생성되었습니다.\n* 3,466건의 실제 병원 거래내역을 기반으로 분석되었습니다.`;
             }
         }
 
