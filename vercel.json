@@ -4,10 +4,6 @@
     {
       "src": "backend/src/index.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "frontend/build/**",
-      "use": "@vercel/static"
     }
   ],
   "routes": [
@@ -17,14 +13,9 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/frontend/build/$1"
+      "dest": "/backend/src/index.js"
     }
   ],
-  "functions": {
-    "backend/src/index.js": {
-      "maxDuration": 60
-    }
-  },
   "env": {
     "NODE_ENV": "production"
   }
