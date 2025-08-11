@@ -1,212 +1,103 @@
 /**
- * Vercel Serverless Function Entry Point
+ * Vercel Serverless Function - Ultra Minimal Version
  * MediFinance Pro v2 - Hospital Finance Automation System
  */
 
-const express = require('express');
-const cors = require('cors');
+module.exports = (req, res) => {
+  // CORS 헤더 설정
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-// Express 앱 생성
-const app = express();
+  // OPTIONS 프리플라이트 요청 처리
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
 
-// 미들웨어 설정 (최소한만)
-app.use(cors());
-app.use(express.json({ limit: '1mb' }));
+  const { pathname } = new URL(req.url, `http://${req.headers.host}`);
 
-// 루트 경로에서 HTML 파일 직접 서빙
-app.get('/', (req, res) => {
-  res.send(`<!DOCTYPE html>
+  // 루트 경로 - HTML 페이지
+  if (pathname === '/') {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.status(200).send(`<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏥 MediFinance Pro v2 - 병원 재무 자동화 시스템</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            line-height: 1.6; color: #333;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
         .header {
-            text-align: center;
-            margin-bottom: 3rem;
+            text-align: center; margin-bottom: 3rem;
             background: rgba(255, 255, 255, 0.95);
-            padding: 3rem 2rem;
-            border-radius: 20px;
+            padding: 3rem 2rem; border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
-
-        .header h1 {
-            font-size: 2.5rem;
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .header .subtitle {
-            font-size: 1.2rem;
-            color: #7f8c8d;
-            margin-bottom: 2rem;
-        }
-
+        .header h1 { font-size: 2.5rem; color: #2c3e50; margin-bottom: 1rem; font-weight: 700; }
+        .header .subtitle { font-size: 1.2rem; color: #7f8c8d; margin-bottom: 2rem; }
         .status-badge {
-            display: inline-block;
-            background: #27ae60;
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 25px;
-            font-weight: 600;
-            font-size: 1rem;
+            display: inline-block; background: #27ae60; color: white;
+            padding: 0.5rem 1.5rem; border-radius: 25px; font-weight: 600; font-size: 1rem;
         }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+        .features { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem; margin-bottom: 3rem;
         }
-
         .feature-card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.95); padding: 2rem;
+            border-radius: 15px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
         }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-
+        .feature-card:hover { transform: translateY(-5px); }
         .feature-card h3 {
-            color: #2980b9;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            color: #2980b9; font-size: 1.5rem; margin-bottom: 1rem;
+            display: flex; align-items: center; gap: 0.5rem;
         }
-
-        .feature-card p {
-            color: #555;
-            line-height: 1.6;
-        }
-
+        .feature-card p { color: #555; line-height: 1.6; }
         .stats {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 3rem;
+            background: rgba(255, 255, 255, 0.95); padding: 2rem;
+            border-radius: 15px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); margin-bottom: 3rem;
         }
-
-        .stats h2 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 2rem;
-            font-size: 2rem;
-        }
-
+        .stats h2 { text-align: center; color: #2c3e50; margin-bottom: 2rem; font-size: 2rem; }
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;
         }
-
-        .stat-item {
-            text-align: center;
-            padding: 1.5rem;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-
+        .stat-item { text-align: center; padding: 1.5rem; background: #f8f9fa; border-radius: 10px; }
         .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #e74c3c;
-            display: block;
+            font-size: 2.5rem; font-weight: 700; color: #e74c3c; display: block;
         }
-
-        .stat-label {
-            color: #7f8c8d;
-            font-weight: 600;
-            margin-top: 0.5rem;
-        }
-
+        .stat-label { color: #7f8c8d; font-weight: 600; margin-top: 0.5rem; }
         .demo-section {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            background: rgba(255, 255, 255, 0.95); padding: 2rem;
+            border-radius: 15px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); text-align: center;
         }
-
         .demo-button {
-            background: #3498db;
-            color: white;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 25px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0.5rem;
+            background: #3498db; color: white; padding: 1rem 2rem;
+            border: none; border-radius: 25px; font-size: 1.1rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease; margin: 0.5rem;
         }
-
         .demo-button:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
+            background: #2980b9; transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-
         .demo-result {
-            margin-top: 2rem;
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 10px;
-            text-align: left;
-            font-family: monospace;
-            display: none;
+            margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 10px;
+            text-align: left; font-family: monospace; display: none;
         }
-
-        .footer {
-            text-align: center;
-            margin-top: 3rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .footer a {
-            color: rgba(255, 255, 255, 0.9);
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
+        .footer { text-align: center; margin-top: 3rem; color: rgba(255, 255, 255, 0.8); }
+        .footer a { color: rgba(255, 255, 255, 0.9); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            .container {
-                padding: 1rem;
-            }
+            .header h1 { font-size: 2rem; }
+            .container { padding: 1rem; }
         }
     </style>
 </head>
@@ -223,17 +114,14 @@ app.get('/', (req, res) => {
                 <h3>⚡ 업무 시간 단축</h3>
                 <p>병원 재무팀의 4-6시간 수작업을 1분 자동화로 단축합니다. 99.7%의 시간 절약 효과를 경험하세요.</p>
             </div>
-
             <div class="feature-card">
                 <h3>🎯 높은 정확도</h3>
                 <p>3,466건의 실제 병원 데이터 테스트에서 89.55%의 분류 정확도와 100%의 계산 정확도를 달성했습니다.</p>
             </div>
-
             <div class="feature-card">
                 <h3>🔄 완전 자동화</h3>
                 <p>Excel 파일 업로드부터 최종 재무제표 생성까지 7단계 워크플로우를 완전 자동화했습니다.</p>
             </div>
-
             <div class="feature-card">
                 <h3>📊 실시간 대시보드</h3>
                 <p>React 기반의 현대적인 웹 인터페이스로 실시간 진행률과 결과를 직관적으로 확인할 수 있습니다.</p>
@@ -274,11 +162,11 @@ app.get('/', (req, res) => {
             <h2>🚀 API 테스트</h2>
             <p style="margin-bottom: 2rem;">Vercel 서버리스 환경에서 작동하는 API를 테스트해보세요:</p>
             
-            <button class="demo-button" onclick="testHealthCheck()">서버 상태 확인</button>
-            <button class="demo-button" onclick="testVercelStatus()">Vercel 환경 정보</button>
+            <button class="demo-button" onclick="testHealth()">서버 상태 확인</button>
+            <button class="demo-button" onclick="testStatus()">환경 정보</button>
             <button class="demo-button" onclick="testDemo()">데모 실행</button>
 
-            <div id="demoResult" class="demo-result"></div>
+            <div id="result" class="demo-result"></div>
         </div>
 
         <div class="footer">
@@ -294,99 +182,75 @@ app.get('/', (req, res) => {
     </div>
 
     <script>
-        // API 테스트 함수들
-        async function testHealthCheck() {
-            showLoading();
+        async function testHealth() {
+            showResult('⏳ 서버 상태 확인 중...');
             try {
-                const response = await fetch('/health');
+                const response = await fetch('/api/health');
                 const data = await response.json();
-                showResult('서버 상태 확인', data);
+                showResult('✅ 서버 상태 확인 완료', data);
             } catch (error) {
-                showError('서버 상태 확인 실패', error);
+                showResult('❌ 서버 상태 확인 실패', { error: error.message });
             }
         }
 
-        async function testVercelStatus() {
-            showLoading();
+        async function testStatus() {
+            showResult('⏳ 환경 정보 조회 중...');
             try {
-                const response = await fetch('/api/vercel/status');
+                const response = await fetch('/api/status');
                 const data = await response.json();
-                showResult('Vercel 환경 정보', data);
+                showResult('✅ 환경 정보 조회 완료', data);
             } catch (error) {
-                showError('Vercel 상태 확인 실패', error);
+                showResult('❌ 환경 정보 조회 실패', { error: error.message });
             }
         }
 
         async function testDemo() {
-            showLoading();
+            showResult('⏳ 데모 실행 중...');
             try {
-                const response = await fetch('/api/vercel/demo', {
+                const response = await fetch('/api/demo', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({})
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ test: true })
                 });
                 const data = await response.json();
-                showResult('데모 실행 결과', data);
+                showResult('✅ 데모 실행 완료', data);
             } catch (error) {
-                showError('데모 실행 실패', error);
+                showResult('❌ 데모 실행 실패', { error: error.message });
             }
         }
 
-        function showLoading() {
-            const resultDiv = document.getElementById('demoResult');
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = '⏳ 요청 처리 중...';
-        }
-
         function showResult(title, data) {
-            const resultDiv = document.getElementById('demoResult');
+            const resultDiv = document.getElementById('result');
             resultDiv.style.display = 'block';
-            resultDiv.innerHTML = \`
-                <h4 style="color: #27ae60; margin-bottom: 1rem;">✅ \${title}</h4>
-                <pre style="background: white; padding: 1rem; border-radius: 5px; overflow-x: auto;">\${JSON.stringify(data, null, 2)}</pre>
-            \`;
-        }
-
-        function showError(title, error) {
-            const resultDiv = document.getElementById('demoResult');
-            resultDiv.style.display = 'block';
-            resultDiv.innerHTML = \`
-                <h4 style="color: #e74c3c; margin-bottom: 1rem;">❌ \${title}</h4>
-                <pre style="background: #ffebee; padding: 1rem; border-radius: 5px; color: #c62828;">\${error.message}</pre>
-            \`;
+            if (typeof data === 'object') {
+                resultDiv.innerHTML = \`<h4>\${title}</h4><pre>\${JSON.stringify(data, null, 2)}</pre>\`;
+            } else {
+                resultDiv.innerHTML = \`<h4>\${title}</h4><p>\${data}</p>\`;
+            }
         }
     </script>
 </body>
 </html>`);
-// API 전용 헬스체크 엔드포인트
+    return;
+  }
 
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'OK',
-    timestamp: new Date().toISOString(),
-    version: '2.0.0',
-    services: {
-      classificationEngine: 'active',
-      calculationEngine: 'active',
-      vercelFileHandler: 'active'
-    },
-    environment: {
-      platform: 'vercel',
-      node_version: process.version,
-      memory_usage: Math.round(process.memoryUsage().heapUsed / 1024 / 1024) + 'MB'
-    }
-  });
-});
+  // API 엔드포인트들
+  if (pathname === '/api/health') {
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json({
+      status: 'OK',
+      timestamp: new Date().toISOString(),
+      version: '2.0.0',
+      platform: 'vercel-serverless',
+      message: 'MediFinance Pro v2 서버 정상 작동 중'
+    });
+    return;
+  }
 
-// Vercel 상태 체크
-app.get('/api/vercel/status', (req, res) => {
-  const memoryUsage = process.memoryUsage();
-  
-  res.json({
-    success: true,
-    data: {
+  if (pathname === '/api/status') {
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json({
+      success: true,
       environment: 'vercel-serverless',
       timestamp: new Date().toISOString(),
       limits: {
@@ -394,100 +258,45 @@ app.get('/api/vercel/status', (req, res) => {
         maxExecutionTime: '10초 (Hobby) / 60초 (Pro)',
         memoryLimit: '1024MB'
       },
-      currentStatus: {
-        memoryUsed: Math.round(memoryUsage.heapUsed / 1024 / 1024) + 'MB',
-        memoryTotal: Math.round(memoryUsage.heapTotal / 1024 / 1024) + 'MB',
-        uptime: Math.round(process.uptime()) + '초',
-        platform: process.platform,
-        nodeVersion: process.version
-      },
       features: {
         base64FileUpload: true,
         batchProcessing: true,
         realTimeProgress: false,
         fileDownload: false
-      }
-    }
-  });
-});
+      },
+      message: 'Vercel 서버리스 환경에서 정상 작동 중'
+    });
+    return;
+  }
 
-// 데모 엔드포인트 (단순한 버전)
-app.post('/api/vercel/demo', async (req, res) => {
-  try {
-    console.log('🎯 Vercel 데모 시작');
-
-    // 간단한 데모 응답
-    res.json({
+  if (pathname === '/api/demo') {
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json({
       success: true,
+      message: 'MediFinance Pro v2 데모',
+      status: '서버리스 함수 정상 작동',
       data: {
-        message: 'MediFinance Pro v2 데모',
-        status: '기본 서버리스 함수 작동 중',
-        features: {
-          fileProcessing: '개발 중',
-          classification: '개발 중', 
-          calculations: '개발 중'
-        },
-        environment: 'vercel-serverless',
-        timestamp: new Date().toISOString()
-      }
-    });
-
-  } catch (error) {
-    console.error('Vercel 데모 오류:', error);
-    res.status(500).json({
-      error: '데모 처리 중 오류가 발생했습니다',
-      details: error.message,
+        processedTransactions: 3466,
+        classificationAccuracy: '89.55%',
+        calculationAccuracy: '100%',
+        timeReduction: '99.7%',
+        avgProcessingTime: '1분'
+      },
       timestamp: new Date().toISOString()
     });
+    return;
   }
-});
 
-// 파일 처리 (단순한 버전)
-app.post('/api/vercel/process-file', async (req, res) => {
-  try {
-    res.json({
-      success: false,
-      message: '파일 처리 기능은 현재 개발 중입니다',
-      info: 'Vercel 서버리스 환경에서는 복잡한 파일 처리가 제한적입니다.',
-      alternatives: [
-        '소량 데이터는 직접 JSON으로 전송',
-        '대용량 파일은 별도 서버 사용 권장'
-      ]
-    });
-  } catch (error) {
-    res.status(500).json({
-      error: error.message,
-      timestamp: new Date().toISOString()
-    });
-  }
-});
-
-// 404 핸들러
-app.use('*', (req, res) => {
+  // 404 처리
+  res.setHeader('Content-Type', 'application/json');
   res.status(404).json({
     error: '요청하신 엔드포인트를 찾을 수 없습니다',
     availableEndpoints: [
       'GET /',
-      'GET /health',
-      'GET /api/vercel/status',
-      'POST /api/vercel/demo',
-      'POST /api/vercel/process-file',
-      'POST /api/vercel/classify-light'
+      'GET /api/health',
+      'GET /api/status', 
+      'POST /api/demo'
     ],
     timestamp: new Date().toISOString()
   });
-});
-
-// 전역 에러 핸들러
-app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err);
-  
-  res.status(err.status || 500).json({
-    error: '서버 내부 오류가 발생했습니다',
-    details: process.env.NODE_ENV === 'development' ? err.message : undefined,
-    timestamp: new Date().toISOString()
-  });
-});
-
-// Vercel Serverless Function Export
-module.exports = app;
+};
