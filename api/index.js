@@ -12,18 +12,10 @@ const app = express();
 // 미들웨어 설정 (최소한만)
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
+app.use(express.static('public')); // 정적 파일 서빙
 
-// 헬스체크 엔드포인트
-app.get('/', (req, res) => {
-  res.json({
-    success: true,
-    message: '🏥 MediFinance Pro v2 - Vercel Deployment',
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    version: '2.0.0',
-    environment: 'vercel-serverless'
-  });
-});
+// 루트 페이지는 HTML 파일로 자동 서빙됨
+// API 전용 헬스체크 엔드포인트
 
 app.get('/health', (req, res) => {
   res.json({
